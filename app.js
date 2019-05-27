@@ -1,10 +1,41 @@
+/*
+promise1.then(function(value) {
+  console.log(value);
+  // expected output: "foo"
+});
+
+console.log(promise1);
+// expected output: [object Promise]*/
 
 const btn = document.createElement('button');
 btn.textContent = 'Press Me';
 document.body.appendChild(btn);
 btn.addEventListener('click' , function(){
-    fetchData('https://swapi.co/api/planets');
+    // fetchData('https://swapi.co/api/planets');
+    fetchAll('https://swapi.co/api/planets' , []).then(function(planets) {
+       // console.log(planets);
+        outputPlanets(planets);
+    });
 });
+
+
+function fetchAll(url , planets){
+     return new Promise(function(resolve, reject) {
+          return fetch(url).then(function(rep){
+             return rep.json(); 
+          }).then(function(data) {
+             planets = data.results.map(function(item){
+                    console.log(item);
+                    return {
+                        name: item.name , 
+                        films: item.films
+                    };
+             });
+             resolve(planets);
+          });
+      });
+}
+
 const output = document.createElement('div');
 document.body.appendChild(output);
 
@@ -24,6 +55,8 @@ function outputPlanets(data) {
     });
     console.log(data);
 }
+
+
 
 function fetchData(url) {
     fetch(url).then(function(rep){
