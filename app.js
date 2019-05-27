@@ -8,6 +8,22 @@ btn.addEventListener('click' , function(){
 const output = document.createElement('div');
 document.body.appendChild(output);
 
+function outputPlanets(data) {
+    data.forEach(function(item) {
+        console.log(item);
+        const div = document.createElement('div');
+        div.textContent = item.name;
+        const ul = document.createElement('ul');
+        for(let x = 0;x < item.films.length; x++){
+            let li = document.createElement('li');
+            li.textContent = item.films[x];
+            ul.appendChild(li);
+        }
+        div.appendChild(ul);
+        output.appendChild(div); 
+    });
+    console.log(data);
+}
 
 function fetchData(url) {
     fetch(url).then(function(rep){
@@ -23,7 +39,22 @@ function fetchData(url) {
                 fetchData(data.next);
             });
         }
-        console.log(data);
+        
+        const planets = data.results.map(function(item) {
+            console.log(item);            
+            return {
+                        name: item.name , 
+                        films: item.films                   
+                   };
+        });
+        outputPlanets(planets);
     })
 }
 
+/*
+const arr1 = [5,6,7,8,2233];
+const arr2 = arr1.map(function(x) {
+    console.log(x);
+    return 5 * x;
+})
+ */
