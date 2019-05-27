@@ -1,11 +1,6 @@
-/*
-promise1.then(function(value) {
-  console.log(value);
-  // expected output: "foo"
-});
+/* Practiciing Promises */
+/* Hanoh Jan - 2019     */
 
-console.log(promise1);
-// expected output: [object Promise]*/
 
 const btn = document.createElement('button');
 btn.textContent = 'Press Me';
@@ -24,13 +19,23 @@ function fetchAll(url , planets){
           return fetch(url).then(function(rep){
              return rep.json(); 
           }).then(function(data) {
-             planets = data.results.map(function(item){
-                    console.log(item);
-                    return {
-                        name: item.name , 
-                        films: item.films
-                    };
+             planets = planets.concat(data.results);
+             console.log(planets);
+             if (data.next) {
+                console.log('Next URL ' + data.next);
+                fetchAll(data.next , planets).then(resolve);
+             }
+             else{
+                 // Call it again
+                 let arr = planets.map(function(item){
+                 return {
+                    name: item.name , 
+                    films: item.films
+                };
+                resolve(arr);
              });
+           }
+       
              resolve(planets);
           });
       });
@@ -83,11 +88,3 @@ function fetchData(url) {
         outputPlanets(planets);
     })
 }
-
-/*
-const arr1 = [5,6,7,8,2233];
-const arr2 = arr1.map(function(x) {
-    console.log(x);
-    return 5 * x;
-})
- */
