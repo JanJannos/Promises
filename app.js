@@ -32,7 +32,12 @@ function fetchAll(url , planets){
           // If you want to catach , uncomment the following line
           // throw 'UH HO !!!';
           return fetch(url).then(function(rep){
-             return rep.json(); 
+              console.log(rep);
+              // if (rep.status !== 404){
+              if (rep.status !== 200){
+                  throw 'UH HO !!!'; 
+              }
+              return rep.json(); 
           }).then(function(data) {
              planets = planets.concat(data.results);
              console.log(planets);
